@@ -1,4 +1,33 @@
-name: Bug Report
+#include <iostream>
+#include <map>
+#include <string>
+#include <serpapi.hpp>
+#include <rapidjson/document.h>
+#include <rapidjson/stringbuffer.h>
+#include <rapidjson/prettywriter.h>
+
+int main() {
+  std::map<std::string, std::string> default_parameter;
+  default_parameter["api_key"] = "secret_api_key";
+  default_parameter["engine"] = "google";
+
+  serpapi::Client client(default_parameter);
+
+  std::map<std::string, std::string> parameter;
+  parameter["q"] = "Coffee";
+  parameter["location"] = "Austin, Texas, United States";
+  parameter["hl"] = "en";
+  parameter["gl"] = "us";
+  parameter["google_domain"] = "google.com";
+
+  rapidjson::Document results = client.search(parameter);
+  rapidjson::StringBuffer buffer;
+  rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(buffer);
+  results.Accept(writer);
+  std::cout << buffer.GetString() << std::endl;
+
+  return 0;
+}name: Bug Report
 description: File a bug report
 labels: ["bug"]
 body:
